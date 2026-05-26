@@ -6,7 +6,6 @@ function updateMultiplication() {
     }).then(function(data) {
         // Cleans the form
         $("#attempt-form").find( "input[name='result-attempt']" ).val("");
-        $("#attempt-form").find( "input[name='user-alias']" ).val("");
         // Gets a random challenge from API and loads the data in the HTML
         $('.multiplication-a').empty().append(data.factorA);
         $('.multiplication-b').empty().append(data.factorB);
@@ -22,10 +21,14 @@ function updateResults(alias) {
             $('#results-div').show();
             $('#results-body').empty();
             data.forEach(function(row) {
+                var correctLabel = row.correct === true 
+                    ? '<span class="badge-yes">ĐÚNG</span>' 
+                    : '<span class="badge-no">SAI</span>';
+                    
                 $('#results-body').append('<tr><td>' + row.id + '</td>' +
                     '<td>' + row.multiplication.factorA + ' x ' + row.multiplication.factorB + '</td>' +
                     '<td>' + row.resultAttempt + '</td>' +
-                    '<td>' + (row.correct === true ? 'YES' : 'NO') + '</td></tr>');
+                    '<td>' + correctLabel + '</td></tr>');
             });
             userId = data[0].user.id;
         }
@@ -49,6 +52,12 @@ $(document).ready(function() {
             attempt = $form.find( "input[name='result-attempt']" ).val(),
             userAlias = $form.find( "input[name='user-alias']" ).val();
 
+        if (!attempt || !userAlias) {
+            $('.result-message').empty()
+                .append("<div class='alert alert-danger'>⚠️ Vui lòng điền đầy đủ kết quả và biệt danh của bạn!</div>");
+            return;
+        }
+
         // Compose the data in the format that the API is expecting
         var data = { user: { alias: userAlias}, multiplication: {factorA: a, factorB: b}, resultAttempt: attempt};
 
@@ -63,10 +72,10 @@ $(document).ready(function() {
             success: function(result){
                 if(result.correct) {
                     $('.result-message').empty()
-                        .append("<p class='bg-success text-center'>The result is correct! Congratulations!</p>");
+                        .append("<div class='alert alert-success'>🎉 Kết quả chính xác! Chúc mừng bạn đã ghi điểm!</div>");
                 } else {
                     $('.result-message').empty()
-                        .append("<p class='bg-danger text-center'>Ooops that's not correct! But keep trying!</p>");
+                        .append("<div class='alert alert-danger'>❌ Rất tiếc, kết quả chưa đúng! Hãy tiếp tục cố gắng nhé! 💪</div>");
                 }
             }
         });
@@ -75,7 +84,7 @@ $(document).ready(function() {
 
         setTimeout(function(){
             var userId = updateResults(userAlias);
-            updateStats(userId);
+            updateStats(userId, userAlias);
             updateLeaderBoard();
         }, 300);
     });

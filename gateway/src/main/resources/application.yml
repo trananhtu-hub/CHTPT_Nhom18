@@ -29,6 +29,11 @@ zuul:
       path: /stats/**
       serviceId: gamification
       strip-prefix: false
+    quests:
+      path: /quests/**
+      serviceId: quest
+      strip-prefix: false
+
 
 endpoints:
   routes:

@@ -32,6 +32,7 @@ class MultiplicationResultAttemptClientImpl implements MultiplicationResultAttem
                 MultiplicationResultAttempt.class);
     }
 
+    @SuppressWarnings("unused")
     private MultiplicationResultAttempt defaultResult(final Long multiplicationResultAttemptId) {
         return new MultiplicationResultAttempt("fakeAlias",
                 10, 10, 100, true);

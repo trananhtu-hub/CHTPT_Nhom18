@@ -60,7 +60,7 @@ public class MultiplicationFeatureSteps {
     public void the_user_gets_points_for_the_attempt(
             final int points) throws Throwable {
         long attemptId = lastAttemptResponse.getId();
-        Thread.currentThread().sleep(2000);
+        Thread.sleep(2000);
         int score = app.getScoreForAttempt(attemptId).getScore();
         assertThat(score).isEqualTo(points);
     }
@@ -69,7 +69,7 @@ public class MultiplicationFeatureSteps {
     public void the_user_gets_the_type_badge(
             final String badgeType) throws Throwable {
         long userId = lastAttemptResponse.getUser().getId();
-        Thread.currentThread().sleep(200);
+        Thread.sleep(200);
         lastStatsResponse = app.getStatsForUser(userId);
         List<String> userBadges = lastStatsResponse.getBadges();
         assertThat(userBadges).contains(badgeType);

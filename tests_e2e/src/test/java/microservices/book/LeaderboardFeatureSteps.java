@@ -20,7 +20,7 @@ public class LeaderboardFeatureSteps {
 
     @Then("^the user ([^\\s]+) is the number (\\d+) on the leaderboard$")
     public void the_user_is_the_number_on_the_leaderboard(final String user, final int position) throws Throwable {
-        Thread.currentThread().sleep(500);
+        Thread.sleep(500);
         List<LeaderBoardPosition> leaderBoard = mSteps.getApp().getLeaderboard();
         assertThat(leaderBoard).isNotEmpty();
         long userId = leaderBoard.get(position - 1).getUserId();

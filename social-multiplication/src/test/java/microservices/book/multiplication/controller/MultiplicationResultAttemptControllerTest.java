@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MultiplicationResultAttemptController.class)
+@SuppressWarnings("null")
 public class MultiplicationResultAttemptControllerTest {
 
     @MockBean

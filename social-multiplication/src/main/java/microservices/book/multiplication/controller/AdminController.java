@@ -22,7 +22,7 @@ public class AdminController {
     }
 
     @PostMapping("/delete-db")
-    public ResponseEntity deleteDatabase() {
+    public ResponseEntity<Void> deleteDatabase() {
         adminService.deleteDatabaseContents();
         return ResponseEntity.ok().build();
     }

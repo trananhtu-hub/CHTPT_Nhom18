@@ -16,6 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/results")
+@SuppressWarnings("null")
 final class MultiplicationResultAttemptController {
 
     private final MultiplicationService multiplicationService;

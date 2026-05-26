@@ -16,6 +16,7 @@ import java.io.InputStream;
  * @author moises.macero
  */
 @Configuration
+@SuppressWarnings("null")
 public class HystrixFallbackConfiguration {
 
     @Bean

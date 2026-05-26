@@ -33,4 +33,13 @@ public interface GameService {
      */
     ScoreCard getScoreForAttempt(Long attemptId);
 
+    /**
+     * Awards custom bonus points to a user (e.g. from quest rewards).
+     * @param userId the user id
+     * @param points the amount of points to award
+     * @return the updated GameStats
+     */
+    GameStats awardPointsToUser(Long userId, int points);
+
 }
+

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cuộc Đua Phép Nhân</title>
+    <meta charset="utf-8">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="multiplication-client.js"></script>
+    <script src="gamification-client.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div class="container">
+    <h1 class="title">🏆 Cuộc Đua Phép Nhân 🏆</h1>
+    
+    <div class="row">
+        <!-- Left Column: Challenge & Stats -->
+        <div class="column">
+            <!-- Card 1: Challenge -->
+            <div class="card">
+                <div class="card-title">🎯 Thử Thách Phép Nhân</div>
+                
+                <div class="challenge-box">
+                    <div class="challenge-label">Thử thách mới dành cho bạn là</div>
+                    <div class="challenge-numbers">
+                        <span class="multiplication-a"></span> x <span class="multiplication-b"></span>
+                    </div>
+                </div>
+
+                <form id="attempt-form">
+                    <div class="form-group">
+                        <label for="result-attempt">Kết quả?</label>
+                        <input type="text" name="result-attempt" id="result-attempt" class="form-control" placeholder="Nhập kết quả phép nhân..." autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-alias">Biệt danh của bạn (viết liền không dấu):</label>
+                        <input type="text" name="user-alias" id="user-alias" class="form-control" placeholder="Ví dụ: hoang, tran_tu..." autocomplete="off">
+                    </div>
+                    <input type="submit" value="Kiểm Tra Kết Quả 🚀" class="btn">
+                </form>
+
+                <div class="result-message"></div>
+            </div>
+
+            <!-- Card 2: Personal Stats -->
+            <div id="stats-div" class="card" style="display: none;">
+                <div class="card-title">📊 Thành Tích Cá Nhân</div>
+                <table id="stats" class="table table-stats">
+                    <tbody>
+                    <tr>
+                        <td class="info">Người chơi:</td>
+                        <td id="stats-user-id" style="font-weight: 700; color: #fff;"></td>
+                    </tr>
+                    <tr>
+                        <td class="info">Điểm số:</td>
+                        <td id="stats-score" style="font-weight: 700; color: #10b981; font-size: 1.2rem;"></td>
+                    </tr>
+                    <tr>
+                        <td class="info">Huy chương:</td>
+                        <td id="stats-badges" class="badge-container"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right Column: Leaderboard & Latest Attempts -->
+        <div class="column">
+            <!-- Card 3: Leaderboard -->
+            <div class="card">
+                <div class="card-title">
+                    <span>👑 Bảng Xếp Hạng</span>
+                    <button id="refresh-leaderboard" class="btn btn-secondary">Cập nhật 🔄</button>
+                </div>
+                <table id="leaderboard" class="table">
+                    <thead>
+                    <tr>
+                        <th>Người chơi</th>
+                        <th>Tổng Điểm</th>
+                    </tr>
+                    </thead>
+                    <tbody id="leaderboard-body"></tbody>
+                </table>
+            </div>
+
+            <!-- Card 4: Latest Attempts -->
+            <div id="results-div" class="card" style="display: none;">
+                <div class="card-title">📝 Các Lượt Chơi Gần Đây</div>
+                <table id="results" class="table">
+                    <thead>
+                    <tr>
+                        <th>Mã lượt</th>
+                        <th>Phép tính</th>
+                        <th>Kết quả nhập</th>
+                        <th>Chính xác?</th>
+                    </tr>
+                    </thead>
+                    <tbody id="results-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

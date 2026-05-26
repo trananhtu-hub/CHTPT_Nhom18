@@ -1,7 +1,6 @@
 package microservices.book.multiplication.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import microservices.book.multiplication.domain.Multiplication;
 import microservices.book.multiplication.domain.User;
 import microservices.book.multiplication.repository.UserRepository;
 import org.junit.Before;

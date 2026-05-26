@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @EnableWebMvc
+@SuppressWarnings("null")
 //BOOT2 changed to interface WebMvcConfigurer instead of subclass of WebMvcConfigurerAdapter
 public class WebConfiguration implements WebMvcConfigurer {
 

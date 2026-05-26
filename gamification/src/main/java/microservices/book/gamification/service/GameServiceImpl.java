@@ -53,6 +53,17 @@ class GameServiceImpl implements GameService {
         return GameStats.emptyStats(userId);
     }
 
+    @Override
+    public GameStats awardPointsToUser(final Long userId, final int points) {
+        ScoreCard scoreCard = new ScoreCard(userId, null, points);
+        scoreCardRepository.save(scoreCard);
+        log.info("User with id {} scored {} bonus points", userId, points);
+        List<BadgeCard> badgeCards = processForBadges(userId, null);
+        return new GameStats(userId, scoreCardRepository.getTotalScoreForUser(userId),
+                badgeCards.stream().map(BadgeCard::getBadge)
+                        .collect(Collectors.toList()));
+    }
+
     /**
      * Checks the total score and the different score cards obtained
      * to give new badges in case their conditions are met.
@@ -88,14 +99,16 @@ class GameServiceImpl implements GameService {
         }
 
         // Lucky number badge
-        MultiplicationResultAttempt attempt = attemptClient
-                .retrieveMultiplicationResultAttemptbyId(attemptId);
-        if(!containsBadge(badgeCardList, Badge.LUCKY_NUMBER) &&
-                (LUCKY_NUMBER == attempt.getMultiplicationFactorA() ||
-                LUCKY_NUMBER == attempt.getMultiplicationFactorB())) {
-            BadgeCard luckyNumberBadge = giveBadgeToUser(
-                    Badge.LUCKY_NUMBER, userId);
-            badgeCards.add(luckyNumberBadge);
+        if (attemptId != null) {
+            MultiplicationResultAttempt attempt = attemptClient
+                    .retrieveMultiplicationResultAttemptbyId(attemptId);
+            if(!containsBadge(badgeCardList, Badge.LUCKY_NUMBER) &&
+                    (LUCKY_NUMBER == attempt.getMultiplicationFactorA() ||
+                    LUCKY_NUMBER == attempt.getMultiplicationFactorB())) {
+                BadgeCard luckyNumberBadge = giveBadgeToUser(
+                        Badge.LUCKY_NUMBER, userId);
+                badgeCards.add(luckyNumberBadge);
+            }
         }
 
         return badgeCards;
