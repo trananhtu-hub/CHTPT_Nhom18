@@ -52,7 +52,7 @@ graph TD
 Thầy cô chỉ cần thực hiện duy nhất 1 bước sau:
 
 ### Bước 1: Chạy Tập Lệnh Khởi Động Toàn Diện
-1. Mở PowerShell hoặc Terminal tại thư mục gốc của dự án `c:\CHTPT\microservices-v10`.
+1. Mở PowerShell hoặc Terminal tại thư mục gốc của dự án `c:\CHTPT_Nhom18`.
 2. Chạy câu lệnh tự động hóa:
    * **Trên Windows:**
      ```powershell
@@ -66,6 +66,7 @@ Thầy cô chỉ cần thực hiện duy nhất 1 bước sau:
    * Tập lệnh sẽ tự động biên dịch toàn bộ mã nguồn Java của các dịch vụ.
    * Khởi chạy Docker Compose ngầm cho RabbitMQ, các microservices và Web UI.
    * Tự động chạy vòng lặp ping kiểm tra sức khỏe hệ thống. Ngay khi nhận được phản hồi phép nhân ngẫu nhiên thực tế từ Backend (chứng tỏ tất cả dịch vụ đã liên kết hoạt động), terminal sẽ hiển thị bảng thông báo màu xanh báo hiệu thành công.
+   * Quá trình chờ đợi và theo dõi diễn ra trong khoảng 45s đến 60s
 
 ### Bước 2: Trải Nghiệm Ứng Dụng
 Sau khi tập lệnh báo thành công, thầy cô có thể mở trình duyệt Web và truy cập các cổng dịch vụ sau:
