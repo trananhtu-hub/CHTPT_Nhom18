@@ -7,3 +7,86 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - microservices-network
+
+  service-registry:
+    build: ./service-registry
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    depends_on:
+      - service-registry
+    networks:
+      - microservices-network
+
+  social-multiplication:
+    build: ./social-multiplication
+    container_name: social-multiplication
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    depends_on:
+      - rabbitmq
+      - service-registry
+    networks:
+      - microservices-network
+
+  gamification:
+    build: ./gamification
+    container_name: gamification
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    depends_on:
+      - rabbitmq
+      - service-registry
+    networks:
+      - microservices-network
+
+  quest-service:
+    build: ./quest-service
+    container_name: quest-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - MULTIPLICATIONHOST=http://social-multiplication:8080
+      - GAMIFICATIONHOST=http://gamification:8081
+    depends_on:
+      - rabbitmq
+      - service-registry
+      - social-multiplication
+      - gamification
+    networks:
+      - microservices-network
+
+  web-ui:
+    build: ./ui
+    container_name: web-ui
+    ports:
+      - "8082:80"
+    depends_on:
+      - gateway
+      - quest-service
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
