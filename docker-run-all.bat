@@ -5,7 +5,7 @@ echo   DANG DONG GOI VA KHOI CHAY DOCKER COMPOSE TOAN DIEN
 echo ==============================================================
 echo.
 
-echo [1/2] Dang bien dich cac file JAR Java microservices...
+echo [1/3] Dang bien dich cac file JAR Java microservices...
 echo.
 echo Bien dich Service Registry...
 cd service-registry
@@ -37,8 +37,12 @@ call .\mvnw.cmd clean package -DskipTests
 cd ..
 echo.
 
-echo [2/2] Dang khoi dong toan bo cac containers qua Docker Compose...
+echo [2/3] Dang khoi dong toan bo cac containers qua Docker Compose...
 docker-compose up --build -d
+
+echo.
+echo [3/3] Dang cho cac microservices khoi dong va dang ky voi Eureka (khoang 15-30 giay)...
+powershell -Command "$start = Get-Date; while (((Get-Date) - $start).TotalSeconds -lt 120) { try { $r = Invoke-RestMethod -Uri 'http://localhost:8000/api/multiplications/random' -UseBasicParsing -ErrorAction Stop; if ($r -and $r.factorA -ne $null) { break; } } catch {} Start-Sleep -Seconds 3 }"
 
 echo.
 echo ==============================================================

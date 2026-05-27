@@ -4,7 +4,7 @@ echo "  DANG DONG GOI VA KHOI CHAY DOCKER COMPOSE TOAN DIEN (MAC)"
 echo "=============================================================="
 echo ""
 
-echo "[1/2] Dang bien dich cac file JAR Java microservices..."
+echo "[1/3] Dang bien dich cac file JAR Java microservices..."
 
 echo "Bien dich Service Registry..."
 cd service-registry && ./mvnw clean package -DskipTests && cd ..
@@ -22,8 +22,20 @@ echo "Bien dich Quest Service..."
 cd quest-service && ./mvnw clean package -DskipTests && cd ..
 echo ""
 
-echo "[2/2] Dang khoi dong toan bo cac containers qua Docker Compose..."
+echo "[2/3] Dang khoi dong toan bo cac containers qua Docker Compose..."
 docker-compose up --build -d
+
+echo ""
+echo "[3/3] Dang cho cac microservices khoi dong va dang ky voi Eureka (khoang 15-30 giay)..."
+START_TIME=$(date +%s)
+READY=false
+while [ $(($(date +%s) - START_TIME)) -lt 120 ]; do
+  if curl -s http://localhost:8000/api/multiplications/random | grep -q "factorA"; then
+    READY=true
+    break
+  fi
+  sleep 3
+done
 
 echo ""
 echo "=============================================================="
