@@ -30,7 +30,8 @@ echo "[3/3] Dang cho cac microservices khoi dong va dang ky voi Eureka (khoang 1
 START_TIME=$(date +%s)
 READY=false
 while [ $(($(date +%s) - START_TIME)) -lt 120 ]; do
-  if curl -s http://localhost:8000/api/multiplications/random | grep -q "factorA"; then
+  RESPONSE=$(curl -s http://localhost:8000/api/multiplications/random)
+  if [[ "$RESPONSE" == *"factorA"* && "$RESPONSE" != *"Sorry"* ]]; then
     READY=true
     break
   fi

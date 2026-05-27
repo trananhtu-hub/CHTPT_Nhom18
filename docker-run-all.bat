@@ -42,7 +42,7 @@ docker-compose up --build -d
 
 echo.
 echo [3/3] Dang cho cac microservices khoi dong va dang ky voi Eureka (khoang 15-30 giay)...
-powershell -Command "$start = Get-Date; while (((Get-Date) - $start).TotalSeconds -lt 120) { try { $r = Invoke-RestMethod -Uri 'http://localhost:8000/api/multiplications/random' -UseBasicParsing -ErrorAction Stop; if ($r -and $r.factorA -ne $null) { break; } } catch {} Start-Sleep -Seconds 3 }"
+powershell -Command "$start = Get-Date; while (((Get-Date) - $start).TotalSeconds -lt 120) { try { $r = Invoke-RestMethod -Uri 'http://localhost:8000/api/multiplications/random' -UseBasicParsing -ErrorAction Stop; if ($r -and $r.factorA -ne $null -and $r.factorA -notmatch 'Sorry') { break; } } catch {} Start-Sleep -Seconds 3 }"
 
 echo.
 echo ==============================================================
