@@ -45,81 +45,40 @@ graph TD
 
 ---
 
-## 🚀 3. Quy Trình Khởi Chạy Hệ Thống Chi Tiết (Cho Giáo Viên)
+## 🚀 3. Quy Trình Khởi Chạy Hệ Thống Tự Động Hóa (Cho Giáo Viên)
 
-Để kiểm tra và chạy thử ứng dụng một cách dễ dàng nhất, vui lòng mở các tab PowerShell (hoặc Terminal) độc lập và chạy theo đúng thứ tự các bước dưới đây:
+Để hỗ trợ thầy cô kiểm tra và chạy thử ứng dụng một cách dễ dàng và nhanh chóng nhất, dự án đã được tích hợp tập lệnh tự động hóa toàn bộ quy trình: Tự động tải thư viện, biên dịch toàn bộ 5 dịch vụ microservices sang file `.jar`, khởi chạy Docker Compose ngầm và chạy vòng lặp kiểm tra sức khỏe hệ thống (Health Check) cho tới khi sẵn sàng.
 
-### Bước 1: Khởi động RabbitMQ Server (Qua Docker)
-Để khởi động nhanh RabbitMQ mà không cần cài đặt cấu hình phức tạp:
-1. Mở PowerShell/Terminal tại thư mục gốc của dự án (nơi chứa tệp `docker-compose.yml`).
-2. Chạy câu lệnh để tự động tải và kích hoạt RabbitMQ chạy ngầm:
-   ```powershell
-   docker-compose up -d
-   ```
-3. *Bạn có thể truy cập trang quản trị RabbitMQ tại địa chỉ: `http://localhost:15672` (Tài khoản: `guest` / Mật khẩu: `guest`) để theo dõi hàng đợi tin nhắn.*
+Thầy cô chỉ cần thực hiện duy nhất 1 bước sau:
 
-### Bước 2: Khởi động Eureka Registry (Trung tâm Đăng ký Dịch vụ)
-1. Mở PowerShell/Terminal mới và di chuyển vào thư mục:
-   ```powershell
-   cd service-registry
-   ```
-2. Chạy lệnh để khởi động:
-   * **Trên Windows:** `.\mvnw.cmd spring-boot:run`
-   * **Trên Linux/macOS:** `./mvnw spring-boot:run`
-3. *Đợi khoảng 5-10 giây cho đến khi terminal báo ứng dụng đã chạy thành công trên cổng `8761`.*
+### Bước 1: Chạy Tập Lệnh Khởi Động Toàn Diện
+1. Mở PowerShell hoặc Terminal tại thư mục gốc của dự án `c:\CHTPT\microservices-v10`.
+2. Chạy câu lệnh tự động hóa:
+   * **Trên Windows:**
+     ```powershell
+     .\docker-run-all.bat
+     ```
+   * **Trên macOS / Linux:**
+     ```bash
+     ./docker-run-all.sh
+     ```
+3. **Theo dõi và chờ đợi trong vài giây:**
+   * Tập lệnh sẽ tự động biên dịch toàn bộ mã nguồn Java của các dịch vụ.
+   * Khởi chạy Docker Compose ngầm cho RabbitMQ, các microservices và Web UI.
+   * Tự động chạy vòng lặp ping kiểm tra sức khỏe hệ thống. Ngay khi nhận được phản hồi phép nhân ngẫu nhiên thực tế từ Backend (chứng tỏ tất cả dịch vụ đã liên kết hoạt động), terminal sẽ hiển thị bảng thông báo màu xanh báo hiệu thành công.
 
-### Bước 3: Khởi động Zuul API Gateway (Cổng Định Tuyến)
-1. Mở PowerShell/Terminal mới:
-   ```powershell
-   cd gateway
-   ```
-2. Chạy lệnh khởi động:
-   * **Trên Windows:** `.\mvnw.cmd spring-boot:run`
-   * **Trên Linux/macOS:** `./mvnw spring-boot:run`
-3. *Chờ Gateway khởi chạy thành công trên cổng `8000`.*
+### Bước 2: Trải Nghiệm Ứng Dụng
+Sau khi tập lệnh báo thành công, thầy cô có thể mở trình duyệt Web và truy cập các cổng dịch vụ sau:
+* **Giao Diện Trực Quan Game (Web UI):** **`http://localhost:8082`** (Giao diện chuẩn Brutalist Next.js sẽ hiển thị hoạt động ngay lập tức).
+* **Eureka Registry (Trung tâm Đăng ký):** `http://localhost:8761` (Xem danh sách các dịch vụ đăng ký hoạt động).
+* **API Gateway:** `http://localhost:8000` (Cổng trung chuyển dữ liệu toàn hệ thống).
+* **RabbitMQ Admin (Quản trị Hàng đợi):** `http://localhost:15672` (Tài khoản: `guest` / Mật khẩu: `guest`).
 
-### Bước 4: Khởi động Dịch vụ Multiplication
-1. Mở PowerShell/Terminal mới:
-   ```powershell
-   cd social-multiplication
-   ```
-2. Chạy lệnh khởi động:
-   * **Trên Windows:** `.\mvnw.cmd spring-boot:run`
-   * **Trên Linux/macOS:** `./mvnw spring-boot:run`
-3. *Chờ dịch vụ chạy thành công trên cổng `8080`.*
-
-### Bước 5: Khởi động Dịch vụ Gamification
-1. Mở PowerShell/Terminal mới:
-   ```powershell
-   cd gamification
-   ```
-2. Chạy lệnh khởi động:
-   * **Trên Windows:** `.\mvnw.cmd spring-boot:run`
-   * **Trên Linux/macOS:** `./mvnw spring-boot:run`
-3. *Chờ dịch vụ chạy thành công trên cổng `8081`.*
-
-### Bước 6: Khởi động Dịch vụ Quest (Nhiệm vụ Thử thách Mới)
-1. Mở PowerShell/Terminal mới:
-   ```powershell
-   cd quest-service
-   ```
-2. Chạy lệnh khởi động:
-   * **Trên Windows:** `.\mvnw.cmd spring-boot:run`
-   * **Trên Linux/macOS:** `./mvnw spring-boot:run`
-3. *Chờ dịch vụ chạy thành công trên cổng `8084`.*
-
-### Bước 7: Khởi động Giao Diện Người Dùng (Web UI)
-Để khởi động giao diện người dùng đơn giản và tiện lợi nhất mà không cần cài đặt Jetty phức tạp:
-1. Mở PowerShell/Terminal mới và di chuyển vào thư mục chứa mã nguồn tĩnh UI:
-   ```powershell
-   cd ui/webapps/ui
-   ```
-2. Chạy dịch vụ web tĩnh nhanh bằng **Python** (Cổng 8082):
-   ```powershell
-   python -m http.server 8082
-   ```
-   *(Nếu dùng macOS hoặc máy đã cài Python 3, hãy chạy: `python3 -m http.server 8082`)*.
-3. Mở trình duyệt Web và truy cập: **`http://localhost:8082`** để bắt đầu trải nghiệm game!
+### Bước 3: Dừng và Xóa Hệ Thống
+Để dừng và giải phóng toàn bộ tài nguyên các container chạy ngầm sau khi kiểm tra xong, thầy cô chạy lệnh:
+```powershell
+docker-compose down
+```
 
 ---
 
