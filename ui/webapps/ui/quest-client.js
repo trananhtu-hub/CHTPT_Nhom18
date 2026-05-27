@@ -2,6 +2,8 @@
     console.log("⚡ Loading Brutalist Quest Integration v10...");
 
     let currentAlias = null;
+    let lastStatsHtml = "";
+    let lastResultsHtml = "";
     let checkInterval = null;
 
     // Main polling loop
@@ -10,6 +12,8 @@
         if (checkInterval) clearInterval(checkInterval);
         checkInterval = setInterval(() => {
             const statsDiv = document.getElementById('stats-div');
+            const resultsDiv = document.getElementById('results-div');
+
             if (statsDiv) {
                 // Highly robust selector: get the first .select-all element (the alias) inside statsDiv
                 const aliasEl = statsDiv.querySelector('.select-all');
@@ -17,10 +21,17 @@
                 if (aliasEl) {
                     const alias = aliasEl.textContent.trim();
                     // Prevent catching the score or header text
-                    if (alias !== currentAlias && !alias.includes("Thành Tích") && !alias.includes("ĐIỂM")) {
-                        currentAlias = alias;
-                        console.log(`👤 Active user detected: "${alias}". Fetching quest progress...`);
-                        loadQuests(alias);
+                    if (alias && !alias.includes("Thành Tích") && !alias.includes("ĐIỂM")) {
+                        const statsHtml = statsDiv.innerHTML;
+                        const resultsHtml = resultsDiv ? resultsDiv.innerHTML : "";
+
+                        if (alias !== currentAlias || statsHtml !== lastStatsHtml || resultsHtml !== lastResultsHtml) {
+                            currentAlias = alias;
+                            lastStatsHtml = statsHtml;
+                            lastResultsHtml = resultsHtml;
+                            console.log(`👤 Active user state changed: "${alias}". Fetching quest progress...`);
+                            loadQuests(alias);
+                        }
                     }
                 } else {
                     console.warn("⚠️ Found #stats-div but could not extract user alias text elements.");
@@ -33,6 +44,8 @@
                     questSec.remove();
                 }
                 currentAlias = null;
+                lastStatsHtml = "";
+                lastResultsHtml = "";
             }
         }, 1500);
     }
